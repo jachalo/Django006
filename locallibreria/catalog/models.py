@@ -1,7 +1,8 @@
-from django.db import models
-from django.urls import reverse  #Redirecciona una url de un libro al browser
-import uuid  #se utiliza para definir atributos claves (pk)
+from django.db import models			
+from django.urls import reverse  		#redirecciona una url de un libro al browser 
+import uuid  							#se utiliza para definir atributos clave (pk)
 
+# Create your models here.
 class Genre(models.Model):
     #Model representing a book genre."""
 	name = models.CharField(max_length=200)
@@ -9,12 +10,14 @@ class Genre(models.Model):
 	def __str__(self):
 		return self.name
 
+
+
 class Book(models.Model):
     
 	title = models.CharField(max_length=200)
 	author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
     
-	summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book') #No es obligatorio que los atributos tengan help text
+	summary = models.TextField(max_length=1000)
 	isbn = models.CharField('ISBN', max_length=13)
 	genre = models.ManyToManyField(Genre)
     
@@ -24,6 +27,10 @@ class Book(models.Model):
 	def get_absolute_url(self):
 		"""Returns the url to access a detail record for this book."""
 		return reverse('book-detail', args=[str(self.id)])
+
+
+
+
 
 class BookInstance(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this particular book across whole library')
@@ -52,6 +59,7 @@ class BookInstance(models.Model):
 	def __str__(self):
 		"""String for representing the Model object."""
 		return f'{self.id} ({self.book.title})'
+
 
 class Author(models.Model):
 	"""Model representing an author."""
